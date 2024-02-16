@@ -14,7 +14,7 @@ RUN npm ci --omit dev
 
 RUN npm install @nestjs/cli
 
-COPY --chown=node:node ./server/.env ./
+COPY --chown=node:node ./.env ./
 
 COPY --chown=node:node ./server/tsconfig.* ./
 
