@@ -9,16 +9,16 @@ import { IsPhoneCustom } from 'src/shared/decorators/isPhoneCustom';
 export class UpdateuserDto {
   @ApiProperty()
   @IsStringCustom()
-  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’]+$/gim)
+  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’'`]+$/gim)
   @IsNotEmptyCustom()
-  @LengthCustom(2, 18)
+  @LengthCustom(2, 30)
   @IsOptional()
   name: string;
   @ApiProperty()
   @IsStringCustom()
-  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’]+$/gim)
+  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’'`]+$/gim)
   @IsNotEmptyCustom()
-  @LengthCustom(2, 18)
+  @LengthCustom(2, 50)
   @IsOptional()
   lastName: string;
   @ApiProperty()

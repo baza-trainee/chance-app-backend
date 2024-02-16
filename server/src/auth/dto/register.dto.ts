@@ -14,13 +14,13 @@ export class RegisterDto extends PasswordDto {
   @IsNotEmptyEmailCustom()
   email: string;
   @ApiProperty()
-  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’]+$/)
+  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’'`]+$/)
+  @LengthCustom(2, 30)
   @IsStringCustom()
-  @LengthCustom(2, 50)
   name: string;
   @ApiProperty()
   @LengthCustom(2, 50)
-  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’]+$/)
+  @MatchesCustom(/^[a-zA-Zа-яА-ЯґҐєЄіІїЇўЎ\s\-’'`]+$/)
   @IsStringCustom()
   lastName: string;
   @ApiProperty()
