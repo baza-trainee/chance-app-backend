@@ -41,7 +41,7 @@ export class TaskController {
     return await this.taskService.addTask(requrest.user.id,createTaskDto)
   }
   @Patch('/:taskId')
-  async addTask(
+  async updateTask(
     @Req() requrest: RequestWithSession,
     @Body() updateTaskDto: UpdateTaskDto,
     @Param('taskId') taskId:string
