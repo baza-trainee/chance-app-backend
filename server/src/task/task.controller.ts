@@ -7,12 +7,14 @@ import {
   Post,
   Req,
   UseGuards,
+  Patch
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { CookieAuthenticationGuard } from 'src/auth/guards/coockie.guard';
 import RequestWithSession from 'src/auth/interfaces/req-with-session.interface';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @ApiTags('task')
 @Controller('task')
@@ -37,5 +39,13 @@ export class TaskController {
     @Body() createTaskDto: CreateTaskDto,
   ) {
     return await this.taskService.addTask(requrest.user.id,createTaskDto)
+  }
+  @Patch('/:taskId')
+  async addTask(
+    @Req() requrest: RequestWithSession,
+    @Body() updateTaskDto: UpdateTaskDto,
+    @Param('taskId') taskId:string
+  ) {
+    return await this.taskService.updateTask(updateTaskDto,taskId,requrest.user.id)
   }
 }

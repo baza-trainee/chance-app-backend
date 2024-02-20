@@ -12,4 +12,7 @@ export class Task {
 
   @prop({ required: false })
   isSended: boolean;
+
+  @prop({ required: false, default: false })
+  isDone: boolean;
 }

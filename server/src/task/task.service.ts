@@ -7,6 +7,7 @@ import { InjectModel } from '@m8a/nestjs-typegoose';
 import { Task } from './model/task.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UserService } from '../user/user.service';
 import { QueueService } from '../queue/queue.service';
@@ -43,6 +44,13 @@ export class TaskService {
     return await this.taskModel.find({
       $and: [{ date: { $lte: Date.now() + 10_000 } }, { isSended: false }],
     });
+  }
+
+  async updateTask(updateTaskDto: UpdateTaskDto, id: string, userId: string) {
+    const task = await this.getTaskById(id);
+    if(task.userId!==userId) throw new ForbiddenException();
+    await task.updateOne(updateTaskDto);
+    return await this.getTaskById(id);
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
