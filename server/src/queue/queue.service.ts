@@ -48,10 +48,11 @@ export class QueueService {
         this.logger.log(
           `task with id ${arg.task_id} from ${arg.task_type} sended`,
         );
+      } else {
+        this.logger.log(
+          `task with id ${arg.task_id} from ${arg.task_type} device not found`,
+        );
       }
-      this.logger.log(
-        `task with id ${arg.task_id} from ${arg.task_type} device not found`,
-      );
     } catch (error) {
       console.log(`error on task ${arg.task_id}`, error);
       this.logger.error(error);
