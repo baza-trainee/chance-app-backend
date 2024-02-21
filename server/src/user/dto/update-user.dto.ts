@@ -28,4 +28,9 @@ export class UpdateuserDto {
   @IsPhoneCustom()
   @IsOptional()
   phone: string;
+  @ApiProperty()
+  @IsStringCustom()
+  @IsNotEmptyCustom()
+  @IsOptional()
+  deviceId: string
 }

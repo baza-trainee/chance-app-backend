@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypegooseModule } from '@m8a/nestjs-typegoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,6 +15,8 @@ import { MongoCastErrorFilter } from './shared/filters/mongo-objectId-cast.filte
 import { ScheduleModule } from '@nestjs/schedule';
 import { FirebaseModule } from './firebase/firebase.module';
 import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
+import { TaskModule } from './task/task.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -31,14 +33,17 @@ import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
       useFactory: getJwtConfig,
       global: true,
     }),
-    // ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),
     UserModule,
     AuthModule,
     MailModule,
-    // FirebaseModule,
+    FirebaseModule,
+    TaskModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [
+    Logger,
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggerInterceptor,
