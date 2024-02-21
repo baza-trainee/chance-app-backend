@@ -42,18 +42,22 @@ export class TaskService {
 
   async getIncomingTasks() {
     return await this.taskModel.find({
-      $and: [{ date: { $lte: Date.now() + 10_000 } }, { isSended: false }],
+      $and: [
+        { date: { $lte: Date.now() + 10_000 } },
+        { isSended: false },
+        { isDone: false },
+      ],
     });
   }
 
   async updateTask(updateTaskDto: UpdateTaskDto, id: string, userId: string) {
     const task = await this.getTaskById(id);
-    if(task.userId!==userId) throw new ForbiddenException();
+    if (task.userId !== userId) throw new ForbiddenException();
     await task.updateOne(updateTaskDto);
     return await this.getTaskById(id);
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async getTasks() {
     const tasks = await this.getIncomingTasks();
     tasks.forEach((task) =>
