@@ -50,6 +50,10 @@ export class TaskService {
     });
   }
 
+  async deleteAllTasks(userId: string) {
+    await this.taskModel.deleteMany({ userId });
+  }
+
   async updateTask(updateTaskDto: UpdateTaskDto, id: string, userId: string) {
     const task = await this.getTaskById(id);
     if (task.userId !== userId) throw new ForbiddenException();

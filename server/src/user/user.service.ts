@@ -14,6 +14,7 @@ import { UpdateuserDto } from './dto/update-user.dto';
 import { ConfirmEmailDto } from '../auth/dto/confirm-email.dto';
 import { ResetPasswordDto } from '../mail/dto/reset-password.dto';
 import { ResendCodeDto } from '../auth/dto/resend-code.dto';
+import { TaskService } from '../task/task.service';
 import {
   accountNotFound,
   emailNotFound,
@@ -28,6 +29,8 @@ export class UserService {
     private readonly userModel: ReturnModelType<typeof User>,
     @Inject(forwardRef(() => MailService))
     private mailService: MailService,
+    @Inject(forwardRef(() => TaskService))
+    private taskService: TaskService,
   ) {}
 
   async findByEmail(email: string) {
@@ -188,8 +191,9 @@ export class UserService {
   }
 
   async deleteUserDEV(email: string) {
-    console.log(email)
+    console.log(email);
     const parent = await this.findByEmail(email);
+    await this.taskService.deleteAllTasks(parent.id);
     await parent.deleteOne();
     return true;
   }
