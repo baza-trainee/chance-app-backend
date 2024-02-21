@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
 import { Response } from 'express';
 import { Error } from 'mongoose';
 
@@ -10,6 +10,7 @@ interface IJsonResp {
 
 @Catch(Error.CastError)
 export class MongoCastErrorFilter implements ExceptionFilter {
+  private readonly logger = new Logger();
   catch(exception: Error.CastError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -18,6 +19,7 @@ export class MongoCastErrorFilter implements ExceptionFilter {
       message: [`${exception.value} is wrong format id`],
       error: 'Bad Request',
     };
+    this.logger.log(`${exception.value} is wrong format id`);
     response.status(404).json(json);
   }
 }

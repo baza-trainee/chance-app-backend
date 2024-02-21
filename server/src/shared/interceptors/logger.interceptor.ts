@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, tap } from 'rxjs';
+import { Error } from 'mongoose';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
@@ -20,7 +21,8 @@ export class LoggerInterceptor implements NestInterceptor {
     console.log(req.path, 'p');
     console.log(req.query, 'q');
     console.log(req.params, 'params');
-    if (req.path.includes('login') || req.path.includes('register')) return next.handle();
+    if (req.path.includes('login') || req.path.includes('register'))
+      return next.handle();
 
     const message = `HTTP Request url:${req.path}, query:${JSON.stringify(
       req.query,
@@ -34,6 +36,9 @@ export class LoggerInterceptor implements NestInterceptor {
           this.logger.log(message + `response: ${responseBody}`);
         },
         (err) => {
+          if (err instanceof Error.CastError) {
+            return;
+          }
           this.logger.log(message + `error: ${err.response.message}`);
         },
       ),
