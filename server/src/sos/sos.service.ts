@@ -36,6 +36,11 @@ export class SosService {
     return group;
   }
   async createContact(userId: string, createContactDto: CreateContactDto) {
+    if (createContactDto.group) {
+      const group = await this.findGroupById(createContactDto.group);
+      if (group.userId !== userId)
+        throw new ForbiddenException('Доступ до группи заборонено');
+    }
     return await this.sosContactModel.create({ userId, ...createContactDto });
   }
   async deleteContact(id: string, userId: string) {
