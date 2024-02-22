@@ -72,7 +72,7 @@ export class SosService {
       if (group.userId !== userId)
         throw new ForbiddenException('Доступ до группи заборонено');
     }
-    contact.updateOne(updateContactDto);
+    return await contact.updateOne(updateContactDto);
   }
   async updateGroup(
     id: string,

@@ -17,5 +17,6 @@ export class UpdateContactDto {
   phone: string;
   @ApiProperty()
   @IsStringCustom()
+  @IsOptional()
   group: string;
 }
