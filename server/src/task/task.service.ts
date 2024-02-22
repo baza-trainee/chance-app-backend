@@ -70,6 +70,7 @@ export class TaskService {
         task_id: task.id,
         task_type: 'task',
         user_id: task.userId,
+        date: task.date,
       }),
     );
   }

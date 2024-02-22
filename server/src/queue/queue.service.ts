@@ -40,7 +40,7 @@ export class QueueService {
         await this.firebaseService.sendPushNotific(
           user.deviceId,
           arg.task_type,
-          { message: arg.message },
+          { message: arg.message, date: arg.date, taskId: arg.task_id },
         );
         const task = await this.taskService.getTaskById(arg.task_id);
         task.isSended = true; // Move to taskService

@@ -3,4 +3,5 @@ export type QueueTask = {
   task_type: 'pill' | 'task';
   user_id: string;
   message: string;
+  date: Date;
 };
