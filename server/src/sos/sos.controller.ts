@@ -62,7 +62,7 @@ export class SosController {
   @Patch('/:id')
   async updateContact(
     @Req() request: RequestWithSession,
-    updateContactDto: UpdateContactDto,
+    @Body() updateContactDto: UpdateContactDto,
     @Param('id') id: string,
   ) {
     return await this.sosService.updateContact(
@@ -74,7 +74,7 @@ export class SosController {
   @Patch('/group/:id')
   async updateGroup(
     @Req() request: RequestWithSession,
-    updateGroupDto: UpdateGroupDto,
+    @Body() updateGroupDto: UpdateGroupDto,
     @Param('id') id: string,
   ) {
     return await this.sosService.updateGroup(
