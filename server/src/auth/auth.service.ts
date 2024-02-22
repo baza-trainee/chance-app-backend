@@ -55,7 +55,7 @@ export class AuthService {
     const user = await this.userService.findFullInfoByEmail(email);
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect)
-      throw new UnauthorizedException('Wrong credentials');
+      throw new UnauthorizedException('Неправильні данні');
     if (!user.isConfirmed) throw new BadRequestException(notConfrimedAccount);
     return user;
   }

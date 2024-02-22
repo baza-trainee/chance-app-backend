@@ -112,7 +112,7 @@ export class UserService {
   async confirmAccountByCode(confirmEmailDto: ConfirmEmailDto) {
     const user = await this.findFullInfoByEmail(confirmEmailDto.email);
     if (user.activationCode !== confirmEmailDto.code) {
-      throw new BadRequestException('Wrong code');
+      throw new BadRequestException(wrongCode);
     }
     user.isConfirmed = true;
     user.activationCode = '';
@@ -122,7 +122,7 @@ export class UserService {
 
   async sendPasswordCode(email: string) {
     const user = await this.userModel.findOne({ email });
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException(notFound);
     const code = String(this.generateFourDigitCode());
     const date = new Date();
     date.setMinutes(date.getMinutes() + 30);
@@ -135,9 +135,9 @@ export class UserService {
 
   async sendChangeEmailCode(userId: string, email: string) {
     const user = await this.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException(notFound);
     if (!user.isConfirmed)
-      throw new BadRequestException('Account not confirmed');
+      throw new BadRequestException('Аккаунт не підтверджено');
     const code = String(this.generateFourDigitCode());
     const date = new Date();
     date.setMinutes(date.getMinutes() + 30);

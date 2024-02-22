@@ -36,7 +36,7 @@ export class TaskService {
 
   async deleteTask(userId: string, taskId: string) {
     const task = await this.getTaskById(taskId);
-    if (task.userId !== userId) throw new ForbiddenException();
+    if (task.userId !== userId) throw new ForbiddenException('Доступ заборонено');
     return await task.deleteOne();
   }
 
@@ -56,7 +56,7 @@ export class TaskService {
 
   async updateTask(updateTaskDto: UpdateTaskDto, id: string, userId: string) {
     const task = await this.getTaskById(id);
-    if (task.userId !== userId) throw new ForbiddenException();
+    if (task.userId !== userId) throw new ForbiddenException('Доступ заборонено');
     await task.updateOne(updateTaskDto);
     return await this.getTaskById(id);
   }
