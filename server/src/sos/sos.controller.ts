@@ -18,8 +18,8 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('sos')
+@Controller('sos')
 @ApiCookieAuth()
 @UseGuards(CookieAuthenticationGuard)
 export class SosController {
