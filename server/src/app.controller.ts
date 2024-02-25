@@ -1,4 +1,4 @@
-import { Controller, Get,Res } from '@nestjs/common';
+import { Controller, Get, StreamableFile  } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 
@@ -9,8 +9,8 @@ export class AppController {
     return 'pong';
   }
   @Get('policy')
-  getPolicy(@Res() res: Response) {
+  getPolicy(): StreamableFile  {
     const file = createReadStream(join(process.cwd(),'src','static','policy.pdf'))
-    file.pipe(res)
+    return new StreamableFile(file)
   }
 }
