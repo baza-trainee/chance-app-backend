@@ -15,6 +15,7 @@ import { ConfirmEmailDto } from '../auth/dto/confirm-email.dto';
 import { ResetPasswordDto } from '../mail/dto/reset-password.dto';
 import { ResendCodeDto } from '../auth/dto/resend-code.dto';
 import { TaskService } from '../task/task.service';
+import { SosService } from '../sos/sos.service';
 import {
   accountNotFound,
   emailNotFound,
@@ -31,6 +32,7 @@ export class UserService {
     private mailService: MailService,
     @Inject(forwardRef(() => TaskService))
     private taskService: TaskService,
+    private readonly sosService: SosService,
   ) {}
 
   async findByEmail(email: string) {
@@ -55,18 +57,6 @@ export class UserService {
     if (findedDoc === null) throw new NotFoundException(notFound);
     return findedDoc;
   }
-  /* 
-  async findMany(ids: string[]) {
-    const users = await this.userModel.find().where('_id').in(ids).exec();
-    const responseIds = users.map((item) => item._id.toString());
-
-    for (const id of ids) {
-      if (!responseIds.includes(id)) {
-        throw new NotFoundException(`User ID ${id} not found`);
-      }
-    }
-    return users;
-  } */
 
   async findFullInfoByEmail(email: string) {
     const findedDoc = await this.userModel
@@ -194,6 +184,7 @@ export class UserService {
     console.log(email);
     const parent = await this.findByEmail(email);
     await this.taskService.deleteAllTasks(parent.id);
+    await this.sosService.cleanUpAfterDelete(parent.id);
     await parent.deleteOne();
     return true;
   }
@@ -212,32 +203,4 @@ export class UserService {
     const randomNumber = Math.floor(Math.random() * 9000) + 1000;
     return randomNumber;
   }
-  /* 
-  async deletePhoto(userId: string) {
-    const user = await this.findById(userId);
-    if (user.avatar) {
-      await this.backblazeService.deleteFile(user.avatar);
-      user.avatar = '';
-      await user.save();
-      return true;
-    }
-    return null;
-  }
- */
-
-  /*   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  private async deleteInactiveAccounts() {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 6);
-    const inactiveAccounts = await this.userModel.find({
-      lastLoginDate: { $lte: date },
-    });
-    if (inactiveAccounts.length) {
-      console.log('deleted accounts');
-      console.log(inactiveAccounts);
-      await Promise.all(
-        inactiveAccounts.map((acc) => this.deleteAccount(acc.email)),
-      );
-    }
-  } */
 }

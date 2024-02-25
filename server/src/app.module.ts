@@ -17,6 +17,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
 import { TaskModule } from './task/task.module';
 import { QueueModule } from './queue/queue.module';
+import { SosModule } from './sos/sos.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { QueueModule } from './queue/queue.module';
     FirebaseModule,
     TaskModule,
     QueueModule,
+    SosModule,
   ],
   controllers: [AppController],
   providers: [

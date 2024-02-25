@@ -5,6 +5,7 @@ import { User } from './models/user.model';
 import { MailModule } from 'src/mail/mail.module';
 import { UserController } from './user.controller';
 import { TaskModule } from '../task/task.module';
+import { SosModule } from 'src/sos/sos.module';
 
 @Module({
   controllers: [UserController],
@@ -12,6 +13,7 @@ import { TaskModule } from '../task/task.module';
     TypegooseModule.forFeature([User]),
     forwardRef(() => MailModule),
     forwardRef(() => TaskModule),
+    SosModule,
   ],
   providers: [UserService],
   exports: [UserService],
