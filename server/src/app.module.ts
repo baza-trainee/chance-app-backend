@@ -18,6 +18,7 @@ import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
 import { TaskModule } from './task/task.module';
 import { QueueModule } from './queue/queue.module';
 import { SosModule } from './sos/sos.module';
+import { MedicineModule } from './medicine/medicine.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SosModule } from './sos/sos.module';
     TaskModule,
     QueueModule,
     SosModule,
+    MedicineModule,
   ],
   controllers: [AppController],
   providers: [

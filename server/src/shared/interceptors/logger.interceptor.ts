@@ -39,7 +39,8 @@ export class LoggerInterceptor implements NestInterceptor {
           if (err instanceof Error.CastError) {
             return;
           }
-          this.logger.log(message + `error: ${err.response.message}`);
+
+          this.logger.log(message + `error: ${err.response?.message}`);
         },
       ),
     );
