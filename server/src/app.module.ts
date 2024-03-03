@@ -19,6 +19,7 @@ import { TaskModule } from './task/task.module';
 import { QueueModule } from './queue/queue.module';
 import { SosModule } from './sos/sos.module';
 import { MedicineModule } from './medicine/medicine.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MedicineModule } from './medicine/medicine.module';
     QueueModule,
     SosModule,
     MedicineModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [
