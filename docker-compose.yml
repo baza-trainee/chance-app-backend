@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  api:
+    build: ./
+    user: '1000'
+    ports:
+      - ${API_LOCAL_PORT}:3000
+    volumes:
+      - ./logs:/home/node/logs
+    command: npm run start
