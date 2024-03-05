@@ -20,6 +20,9 @@ import { QueueModule } from './queue/queue.module';
 import { SosModule } from './sos/sos.module';
 import { MedicineModule } from './medicine/medicine.module';
 import { SocketModule } from './socket/socket.module';
+import { MessageController } from './message/message.controller';
+import { MessageService } from './message/message.service';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -46,8 +49,9 @@ import { SocketModule } from './socket/socket.module';
     SosModule,
     MedicineModule,
     SocketModule,
+    MessageModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MessageController],
   providers: [
     Logger,
     {

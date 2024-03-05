@@ -1,39 +1,101 @@
-import { Logger } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
+  Req,
+  UseFilters,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import {
+  ConnectedSocket,
+  MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { WebsocketExceptionFilter } from './ws-exception.filter';
 import { Socket, Server } from 'socket.io';
+import { MessageService } from 'src/message/message.service';
+import { JwtService } from '@nestjs/jwt';
+import { WsJwtGuard } from 'src/auth/guards/ws.guard';
+import { ApiCookieAuth } from '@nestjs/swagger';
+import { WsJwtGuardData } from 'src/shared/decorators/jwtWsReturnData';
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+class ChatMessage {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+  @IsNotEmpty()
+  @IsString()
+  toUserId: string;
+  @IsOptional()
+  user: {
+    id: string;
+    email: string;
+  };
+}
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
+    credentials: true,
   },
 })
-export class EventsGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
-  @WebSocketServer() server: Server;
-  private logger: Logger = new Logger('EventsGateway');
+@UseFilters(new WebsocketExceptionFilter())
+export class ChatGateway {
+  @WebSocketServer()
+  server: Server;
 
-  @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: string): void {
-    this.server.emit('message', payload);
+  constructor(
+    private messageService: MessageService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(
+    @MessageBody() room: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.join(room);
   }
 
-  afterInit(server: Server) {
-    this.logger.log('Init');
+  @SubscribeMessage('leaveRoom')
+  handleLeaveRoom(
+    @MessageBody() room: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.leave(room);
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Client connected: ${client.id}`);
-  }
+  @SubscribeMessage('text-chat')
+  @ApiCookieAuth()
+  @UseGuards(WsJwtGuard)
+  @UsePipes(new ValidationPipe())
+  async handleMessage(
+    @MessageBody() message: ChatMessage,
+    @ConnectedSocket() client: Socket,
+    // @WsJwtGuardData() data: any,
+  ) {
+    const roomName = [message.user.id, message.toUserId].sort().join('-');
 
-  handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
+    console.log('Message:', message);
+    const dbMessage = {
+      name: message.name,
+      message: message.message,
+      fromUserId: message.user.id,
+      toUserId: message.toUserId,
+    };
+    await this.messageService.createMessage(dbMessage);
+
+    this.server.to(roomName).emit('text-chat', {
+      ...message,
+      time: new Date().toDateString(),
+    });
   }
 }
