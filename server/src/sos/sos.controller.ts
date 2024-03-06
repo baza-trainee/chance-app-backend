@@ -45,6 +45,7 @@ export class SosController {
   ) {
     return await this.sosService.createGroup(request.user.id, createGroupDto);
   }
+
   @Delete('/:id')
   async deleteContact(
     @Req() request: RequestWithSession,
