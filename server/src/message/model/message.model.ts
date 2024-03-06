@@ -1,16 +1,15 @@
-import { modelOptions, prop } from '@typegoose/typegoose';
+import { Ref, modelOptions, prop } from '@typegoose/typegoose';
+import { User } from 'src/user/models/user.model';
 
 @modelOptions({ schemaOptions: { versionKey: false, timestamps: true } })
 export class Message {
-  @prop({ required: true })
-  name!: string;
 
-  @prop({ required: true })
-  message!: string;
+  @prop()
+  message: string;
 
-  @prop({ required: true })
-  fromUserId!: string;
+  @prop({ ref: () => User })
+  fromUserId: Ref<User>;
 
-  @prop({ required: true })
-  toUserId!: string;
+  @prop({ ref: () => User })
+  toUserId: Ref<User>;
 }
