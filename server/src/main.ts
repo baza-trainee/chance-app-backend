@@ -54,7 +54,6 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, stopAtFirstError: true }),
   );
-  app.enableCors();
   app.use(
     session({
       secret: configService.get('SESSION_SECRET'),
@@ -74,7 +73,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(globalPrefix + '/swagger', app, document);
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
   await app.listen(3000);
 }
 bootstrap();
