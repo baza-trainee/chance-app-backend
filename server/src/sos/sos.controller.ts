@@ -38,13 +38,13 @@ export class SosController {
       createContactDto,
     );
   }
-  @Post('/group')
-  async createGroup(
-    @Req() request: RequestWithSession,
-    @Body() createGroupDto: CreateGroupDto,
-  ) {
-    return await this.sosService.createGroup(request.user.id, createGroupDto);
-  }
+  // @Post('/group')
+  // async createGroup(
+  //   @Req() request: RequestWithSession,
+  //   @Body() createGroupDto: CreateGroupDto,
+  // ) {
+  //   return await this.sosService.createGroup(request.user.id, createGroupDto);
+  // }
   @Delete('/:id')
   async deleteContact(
     @Req() request: RequestWithSession,

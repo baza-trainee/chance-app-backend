@@ -18,7 +18,14 @@ class ContactDto {
 }
 
 export class CreateContactDto {
-
+  // @ApiProperty()
+  // @IsStringCustom()
+  // @LengthCustom(2, 30)
+  // name: string;
+  // @ApiProperty()
+  // @IsStringCustom()
+  // @IsPhoneCustom()
+  // phone: string;
   @ApiProperty()
   @IsString()
   @IsOptional()
