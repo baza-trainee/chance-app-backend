@@ -86,7 +86,6 @@ export class ChatGateway {
 
     console.log('Message:', message);
     const dbMessage = {
-      name: message.name,
       message: message.message,
       fromUserId: message.user.id,
       toUserId: message.toUserId,
