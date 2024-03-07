@@ -43,7 +43,7 @@ class ChatMessage {
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:3001',
+    origin: '*',
     credentials: true,
   },
 })
@@ -85,6 +85,7 @@ export class ChatGateway {
     const dbMessage = {
       message: message.message,
       fromUserId: message.user.id,
+      geoData: message.geoData,
       toUserId: message.toUserId,
     };
     await this.messageService.createMessage(dbMessage);

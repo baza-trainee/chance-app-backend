@@ -3,7 +3,6 @@ import { User } from 'src/user/models/user.model';
 
 @modelOptions({ schemaOptions: { versionKey: false, timestamps: true } })
 export class Message {
-
   @prop()
   message: string;
 
@@ -12,4 +11,10 @@ export class Message {
 
   @prop({ ref: () => User })
   toUserId: Ref<User>;
+
+  @prop()
+  geoData?: {
+    latitude: number;
+    longitude: number;
+  };
 }
