@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Req,
   UseFilters,
   UseGuards,
   UsePipes,
@@ -17,23 +16,24 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { WebsocketExceptionFilter } from './ws-exception.filter';
 import { Socket, Server } from 'socket.io';
 import { MessageService } from 'src/message/message.service';
-import { JwtService } from '@nestjs/jwt';
 import { WsJwtGuard } from 'src/auth/guards/ws.guard';
 import { ApiCookieAuth } from '@nestjs/swagger';
-import { WsJwtGuardData } from 'src/shared/decorators/jwtWsReturnData';
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
 
 class ChatMessage {
   @IsNotEmpty()
   @IsString()
   name: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   message: string;
   @IsNotEmpty()
   @IsString()
   toUserId: string;
+  @IsOptional()
+  geoData: {
+    latitude: number;
+    longitude: number;
+  };
   @IsOptional()
   user: {
     id: string;
@@ -43,7 +43,7 @@ class ChatMessage {
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: 'http://localhost:3001',
     credentials: true,
   },
 })
@@ -52,10 +52,7 @@ export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  constructor(
-    private messageService: MessageService,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private messageService: MessageService) {}
 
   @SubscribeMessage('joinRoom')
   handleJoinRoom(
@@ -94,7 +91,7 @@ export class ChatGateway {
 
     this.server.to(roomName).emit('text-chat', {
       ...message,
-      time: new Date().toDateString(),
+      time: new Date().toISOString(),
     });
   }
 }
