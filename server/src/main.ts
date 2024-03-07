@@ -73,6 +73,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(globalPrefix + '/swagger', app, document);
+  // app.enableCors({
+  //   origin: 'http://localhost:3001',
+  //   credentials: true,
+  // });
+
   app.enableCors({
     origin: '*',
     credentials: true,
