@@ -1,8 +1,6 @@
 import { prop, modelOptions } from '@typegoose/typegoose';
 import { MedicineInstruction, MedicineType, Periodicity } from '../enums/enums';
 
-
-
 @modelOptions({ schemaOptions: { versionKey: false, timestamps: true } })
 export class Medicine {
   @prop({ required: true })
