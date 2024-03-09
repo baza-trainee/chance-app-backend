@@ -42,4 +42,6 @@ export class User {
 
   @prop({ requried: false })
   deviceId: string;
+
+  
 }
