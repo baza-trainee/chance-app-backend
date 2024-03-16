@@ -5,9 +5,6 @@ import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 @modelOptions({ schemaOptions: { versionKey: false, timestamps: true } })
 export class Medicine extends TimeStamps {
   @prop({ required: true })
-  id!: number;
-
-  @prop({ required: true })
   name!: string;
 
   @prop({ required: true, enum: MedicineType })
