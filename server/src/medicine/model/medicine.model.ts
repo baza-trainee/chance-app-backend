@@ -29,7 +29,7 @@ export class Medicine extends TimeStamps {
   userId?: string;
 
   @prop({ required: false })
-  doneAt?: Date;
+  doneAt?: Date[];
 
   @prop({ required: false })
   rescheduledOn?: Record<string, number>;

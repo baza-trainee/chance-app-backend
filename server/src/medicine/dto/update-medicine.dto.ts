@@ -50,10 +50,10 @@ export class UpdateMedicineDto {
   instruction?: MedicineInstruction;
 
   @ApiProperty()
-  @IsDate()
+  @IsArray()
   @Type(() => Date)
   @IsOptional()
-  doneAt: Date;
+  doneAt: Date[];
 
   @ApiProperty()
   @IsOptional()
