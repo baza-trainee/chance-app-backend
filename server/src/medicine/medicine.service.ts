@@ -17,8 +17,8 @@ export class MedicineService {
     return medicine;
   }
 
-  async getMedicine() {
-    const medicine = await this.medicineModel.find();
+  async getMedicine(userId: string) {
+    const medicine = await this.medicineModel.find({ userId });
     return medicine;
   }
 

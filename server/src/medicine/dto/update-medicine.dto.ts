@@ -14,17 +14,6 @@ import { MedicineInstruction, MedicineType, Periodicity } from '../enums/enums';
 export class UpdateMedicineDto {
   @ApiProperty()
   @IsOptional()
-  @IsNumber()
-  id: number;
-
-  @ApiProperty({ type: [Number] })
-  @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  reminderIds: number[];
-
-  @ApiProperty()
-  @IsOptional()
   @IsString()
   name: string;
 
@@ -59,4 +48,15 @@ export class UpdateMedicineDto {
   @IsOptional()
   @IsEnum(MedicineInstruction)
   instruction?: MedicineInstruction;
+
+  @ApiProperty()
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  doneAt: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsObject()
+  rescheduledOn?: Record<string, number>;
 }

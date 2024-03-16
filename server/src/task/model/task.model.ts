@@ -1,6 +1,7 @@
 import { prop } from '@typegoose/typegoose';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
-export class Task {
+export class Task extends TimeStamps {
   @prop({ required: true })
   userId!: string;
 
@@ -15,4 +16,7 @@ export class Task {
 
   @prop({ required: false, default: false })
   isDone: boolean;
+
+  @prop({ required: false, default: 0 })
+  remindBefore: number;
 }

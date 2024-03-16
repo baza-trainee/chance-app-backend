@@ -15,17 +15,6 @@ import { MedicineInstruction, MedicineType, Periodicity } from '../enums/enums';
 export class CreateMedicineDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
-
-  @ApiProperty({ type: [Number] })
-  @IsNotEmpty()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  reminderIds: number[];
-
-  @ApiProperty()
-  @IsNotEmpty()
   @IsString()
   name: string;
 

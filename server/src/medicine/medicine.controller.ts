@@ -24,8 +24,10 @@ export class MedicineController {
   constructor(private readonly medicineService: MedicineService) {}
 
   @Get()
-  async getMedicine() {
-    return this.medicineService.getMedicine();
+  async getMedicine(
+    @Req() request: RequestWithSession,
+  ) {
+    return this.medicineService.getMedicine(request.user.id);
   }
 
   @Get('/:id')

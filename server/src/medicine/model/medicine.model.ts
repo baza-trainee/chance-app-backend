@@ -1,13 +1,11 @@
 import { prop, modelOptions } from '@typegoose/typegoose';
 import { MedicineInstruction, MedicineType, Periodicity } from '../enums/enums';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 @modelOptions({ schemaOptions: { versionKey: false, timestamps: true } })
-export class Medicine {
+export class Medicine extends TimeStamps {
   @prop({ required: true })
   id!: number;
-
-  @prop({ required: true })
-  reminderIds!: number[];
 
   @prop({ required: true })
   name!: string;
@@ -32,4 +30,10 @@ export class Medicine {
 
   @prop({ required: false })
   userId?: string;
+
+  @prop({ required: false })
+  doneAt?: Date;
+
+  @prop({ required: false })
+  rescheduledOn?: Record<string, number>;
 }

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmptyCustom } from '../../shared/decorators/isNotEmptyCustom';
 import { IsStringCustom } from '../../shared/decorators/isStringCustom';
 import { LengthCustom } from '../../shared/decorators/LengthCustom';
-import { IsDate, IsOptional, IsBoolean } from 'class-validator';
+import { IsDate, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTaskDto {
@@ -20,4 +20,8 @@ export class CreateTaskDto {
   @IsBoolean()
   @IsOptional()
   isDone: boolean;
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  remindBefore: number;
 }
