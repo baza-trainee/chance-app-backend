@@ -44,7 +44,7 @@ export class AuthController {
   @UseGuards(LogInWithCredentialsGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async login(@Body() loginDto: LoginDto, @Req() request: RequestWithSession) {
-    return { id: request.user.id };
+    return this.authService.login(loginDto, request);
   }
 
   @Post('google/:code')

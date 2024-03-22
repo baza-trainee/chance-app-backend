@@ -16,6 +16,7 @@ import {
   emailAlreadyTaken,
   notConfrimedAccount,
 } from './utils/errors';
+import RequestWithSession from './interfaces/req-with-session.interface';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,7 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async loginOld(loginDto: LoginDto) {
     const user = await this.userService.findFullInfoByEmail(loginDto.email);
     const isPasswordCorrect = await bcrypt.compare(
       loginDto.password,
@@ -37,6 +38,17 @@ export class AuthService {
       email: user.email,
     });
     return jwt;
+  }
+
+  async login(loginDto: LoginDto, request: RequestWithSession) {
+    const jwt = this.jwtService.sign({
+      id: request.user.id,
+      email: request.user.email,
+    });
+    return {
+      id: request.user.id,
+      token: jwt,
+    };
   }
 
   async register(registerDto: RegisterDto) {
