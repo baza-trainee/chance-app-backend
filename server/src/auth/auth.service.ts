@@ -1,28 +1,30 @@
-import { UserService } from './../user/user.service';
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './dto/register.dto';
-import { ConfirmEmailDto } from './dto/confirm-email.dto';
 import * as bcrypt from 'bcrypt';
-import { LoginDto } from './dto/login.dto';
-import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import { FirebaseService } from 'src/firebase/firebase.service';
 import { ResetPasswordDto } from '../mail/dto/reset-password.dto';
+import { UserService } from './../user/user.service';
+import { ConfirmEmailDto } from './dto/confirm-email.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import RequestWithSession from './interfaces/req-with-session.interface';
 import {
-  wrongCredentials,
   emailAlreadyTaken,
   notConfrimedAccount,
+  wrongCredentials,
 } from './utils/errors';
-import RequestWithSession from './interfaces/req-with-session.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
+    private readonly firebaseService: FirebaseService,
   ) {}
 
   async loginOld(loginDto: LoginDto) {
@@ -39,15 +41,19 @@ export class AuthService {
     });
     return jwt;
   }
+  Ò;
 
   async login(loginDto: LoginDto, request: RequestWithSession) {
-    const jwt = this.jwtService.sign({
-      id: request.user.id,
-      email: request.user.email,
-    });
+    const firebaseToken = await this.firebaseService.createCustomToken(
+      request.user.id,
+      {
+        id: request.user.id,
+        email: request.user.email,
+      },
+    );
     return {
       id: request.user.id,
-      token: jwt,
+      token: firebaseToken,
     };
   }
 
@@ -86,7 +92,7 @@ export class AuthService {
 
   async getMe(email: string) {
     const user = await this.userService.findByEmail(email);
-    return user
+    return user;
   }
 
   async sendResetPasswordCode(

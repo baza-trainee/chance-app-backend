@@ -21,7 +21,6 @@ import { SosModule } from './sos/sos.module';
 import { MedicineModule } from './medicine/medicine.module';
 import { SocketModule } from './socket/socket.module';
 import { MessageController } from './message/message.controller';
-import { MessageService } from './message/message.service';
 import { MessageModule } from './message/message.module';
 import { ProductModule } from './product/product.module';
 import { NavaccessModule } from './navaccess/navaccess.module';

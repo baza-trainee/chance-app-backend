@@ -6,6 +6,7 @@ import { FirebaseMessageEnumType } from './interfaces/messages.interface';
 @Injectable({})
 export class FirebaseService {
   constructor(@Inject('firebase') private firebaseInstance: app.App) {}
+
   async sendPushNotific(
     deviceId: string,
     message: FirebaseMessageEnumType,
@@ -21,5 +22,12 @@ export class FirebaseService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async createCustomToken(
+    uid: string,
+    developerClaims?: object,
+  ): Promise<string> {
+    return this.firebaseInstance.auth().createCustomToken(uid, developerClaims);
   }
 }
