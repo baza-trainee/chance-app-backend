@@ -1,16 +1,15 @@
+import { InjectModel } from '@m8a/nestjs-typegoose';
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectModel } from '@m8a/nestjs-typegoose';
-import { Task } from './model/task.model';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { ReturnModelType } from '@typegoose/typegoose';
+import { QueueService } from '../queue/queue.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { UserService } from '../user/user.service';
-import { QueueService } from '../queue/queue.service';
+import { Task } from './model/task.model';
 
 @Injectable({})
 export class TaskService {
@@ -31,12 +30,13 @@ export class TaskService {
   }
 
   async addTask(userId: string, createTaskDto: CreateTaskDto) {
-    await this.taskModel.create({ userId, ...createTaskDto, isSended: false });
+    return this.taskModel.create({ userId, ...createTaskDto, isSended: false });
   }
 
   async deleteTask(userId: string, taskId: string) {
     const task = await this.getTaskById(taskId);
-    if (task.userId !== userId) throw new ForbiddenException('Доступ заборонено');
+    if (task.userId !== userId)
+      throw new ForbiddenException('Доступ заборонено');
     return await task.deleteOne();
   }
 
@@ -56,7 +56,8 @@ export class TaskService {
 
   async updateTask(updateTaskDto: UpdateTaskDto, id: string, userId: string) {
     const task = await this.getTaskById(id);
-    if (task.userId !== userId) throw new ForbiddenException('Доступ заборонено');
+    if (task.userId !== userId)
+      throw new ForbiddenException('Доступ заборонено');
     await task.updateOne(updateTaskDto);
     return await this.getTaskById(id);
   }
